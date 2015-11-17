@@ -113,7 +113,7 @@ var Router = React.createClass({
 
     return (
       <View
-        style={[styles.container, this.props.bgStyle, extraStyling, {marginTop: margin}]}
+        style={[styles.container, this.props.bgStyle, extraStyling, {marginTop: margin}]}>
         <Content
           name={route.name}
           index={route.index}

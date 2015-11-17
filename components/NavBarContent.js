@@ -1,8 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-var Animated = require('Animated');
-var Easing = require('Easing');
+var {Animated, Easing, } = React;
 
 var NavButton = require('./NavButton');
 
