@@ -1,48 +1,63 @@
 'use strict';
 
-var React = require('react-native');
+import React from 'react-native';
 
-var NavBarContent = require('./NavBarContent');
+import NavBarContent from './NavBarContent';
 
 var {
   StyleSheet,
   View
 } = React;
 
-var NavBarContainer = React.createClass({
+export default class NavBarContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.styles = StyleSheet.create({
+      navbarContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 64
+      },
+      navbarContainerHidden: {
+        position: 'absolute',
+        top: -64,
+        left: 0,
+        right: 0,
+        height: 64
+      }
+    });
+    this.goBack = this.goBack.bind(this);
+    this.goForward = this.goForward.bind(this);
+    this.customAction = this.customAction.bind(this);
+  }
 
-  getInitialState: function() {
-    return {
-      backButtonOpacity: 0,
-      previousRoute: {} // Keep previousRoute for smooth transitions
-    };
-  },
-
-  componentWillReceiveProps: function(newProps) {
+  componentWillReceiveProps(newProps) {
     if (this.props && this.props.currentRoute.index !== newProps.currentRoute.index) {
       this.setState({
         previousRoute: this.props.currentRoute
       });
     }
-  },
+  }
 
-  goBack: function() {
+  goBack() {
     this.props.toBack(this.props.navigator);
-  },
+  }
 
-  goForward: function(route) {
+  goForward(route) {
     this.props.toRoute(route, this.props.navigator);
-  },
+  }
 
-  customAction: function(opts) {
+  customAction(opts) {
     this.props.customAction(opts);
-  },
+  }
 
   // We render both the current and the previous navbar (for animation)
-  render: function() {
-    var trans,
-      navbarStyle,
-      navbarContent;
+  render() {
+    let trans;
+    let navbarStyle;
+    let navbarContent;
 
     if (this.props.currentRoute.trans) {
       trans = {backgroundColor: 'transparent'};
@@ -51,9 +66,9 @@ var NavBarContainer = React.createClass({
     }
 
     if (this.props.currentRoute.hideNavigationBar) {
-      navbarStyle = styles.navbarContainerHidden;
+      navbarStyle = this.styles.navbarContainerHidden;
     } else {
-      navbarStyle = styles.navbarContainer;
+      navbarStyle = this.styles.navbarContainer;
     }
 
     if(this.props.currentRoute.trans) {
@@ -107,23 +122,4 @@ var NavBarContainer = React.createClass({
       </View>
     );
   }
-});
-
-var styles = StyleSheet.create({
-  navbarContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 64
-  },
-  navbarContainerHidden: {
-    position: 'absolute',
-    top: -64,
-    left: 0,
-    right: 0,
-    height: 64
-  }
-});
-
-module.exports = NavBarContainer;
+};
