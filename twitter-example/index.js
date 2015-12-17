@@ -1,45 +1,42 @@
 'use strict';
 
-var React = require('react-native');
+import React from 'react-native';
 
-var Router = require('../index');
+import Router from '../index';
 
-var HomePage = require('./pages/HomePage');
-var BackButton = require('./components/BackButton');
-var SearchAndCompose = require('./components/icons/SearchAndCompose');
-var AddPeople = require('./components/icons/AddPeople');
+import HomePage from './pages/HomePage';
+import BackButton from './components/BackButton';
+import SearchAndCompose from './components/icons/SearchAndCompose';
+import AddPeople from './components/icons/AddPeople';
 
 var {
   StyleSheet,
   View,
 } = React;
 
-var styles = StyleSheet.create({
-  header: {
-    backgroundColor: '#5cafec'
+export default class TwitterApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.firstRoute = {
+      name: 'Home',
+      component: HomePage,
+      leftCorner: AddPeople,
+    };
+    this.styles = StyleSheet.create({
+      header: {
+        backgroundColor: '#5cafec',
+      }
+    });
   }
-});
 
-
-
-var firstRoute = {
-  name: 'Home',
-  component: HomePage,
-  leftCorner: AddPeople
-};
-
-var TwitterApp = React.createClass({
   render() {
     return (
-      <Router 
-        firstRoute={firstRoute} 
-        headerStyle={styles.header}
+      <Router
+        firstRoute={this.firstRoute}
+        headerStyle={this.styles.header}
         backButtonComponent={BackButton}
         rightCorner={SearchAndCompose}
       />
     )
   }
-});
-
-
-module.exports = TwitterApp;
+}

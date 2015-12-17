@@ -145,12 +145,12 @@ Events emitted by the router:
 A more advanced example: Twitter app
 ------------------------------------
 
-To see more of the router in action, you can check out the Twitter example app that comes with the package. Just make sure that you first drag all the images from ```node_modules/react-native-router/twitter-example/images``` to your project's Images.xcassets
+To see more of the router in action, you can check out the Twitter example app that comes with the package. Just make sure that you first drag all the images from ```node_modules/ga-native-router/twitter-example/images``` to your project's Images.xcassets
 
 After that, don't forget to rebuild the app in XCode before you launch the simulator. Then test the app by requiring the TwitterApp component:
 
 ```javascript
-var TwitterApp = require('./node_modules/react-native-router/twitter-example');
+import TwitterApp from 'gb-native-router/twitter-example';
 
 var {
   AppRegistry
