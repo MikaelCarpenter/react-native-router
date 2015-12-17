@@ -17,7 +17,7 @@ Usage
 -----
 
 ```javascript
-var Router = require('gb-native-router');
+import Router from 'gb-native-router';
 ```
 
 The basics:
