@@ -74,9 +74,17 @@ class HelloPage extends React.Component {
   }
 
   nextPage() {
+    // Apply random background color to header of the next page
+    const styles = StyleSheet.create({
+      header: {
+        backgroundColor: Math.floor(Math.random()*16777215).toString(16),
+      }
+    });
+
     this.props.toRoute({
       name: "A new screen",
       component: HelloPage,
+      headerStyle: styles.header,
     });
   }
 
