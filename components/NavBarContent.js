@@ -1,7 +1,7 @@
 'use strict';
 
-var React = require('react-native');
-var NavButton = require('./NavButton');
+import React from 'react-native';
+import NavButton from './NavButton';
 
 var {
   StyleSheet,
@@ -11,15 +11,55 @@ var {
   Easing
 } = React;
 
-var NavBarContent = React.createClass({
+export default class NavBarContent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.styles = StyleSheet.create({
+      navbar: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 64, // Default iOS navbar height
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingTop: 13
+      },
+      navbarText: {
+        color: 'white',
+        fontSize: 17,
+        margin: 10,
+        marginTop: 14,
+        fontWeight: '600',
+        textAlign: 'center',
+        alignItems: 'center',
+      },
+      corner: {
+        flex: 1,
+        justifyContent: 'center',
+      },
 
-  getInitialState: function() {
-    return {
-      opacity: this.props.willDisappear ? new Animated.Value(1) : new Animated.Value(0)
-    };
-  },
+      alignLeft: {
+        alignItems: 'flex-start'
+      },
+      alignRight: {
+        alignItems: 'flex-end'
+      },
+      buttonTextLeft: {
+        marginLeft: 10,
+      },
+      buttonTextRight: {
+        marginRight: 10
+      }
+    });
+    this.goBack = this.goBack.bind(this);
+    this.goForward = this.customAction.bind(this);
+    this.customAction = this.customAction.bind(this);
+    this.state = {opacity: this.props.willDisappear ? new Animated.Value(1) : new Animated.Value(0)};
+  }
 
-  componentWillReceiveProps: function(newProps) {
+  componentWillReceiveProps(newProps) {
     if (newProps.route !== this.props.route) {
       this.state.opacity.setValue(this.props.willDisappear ? 1 : 0);
 
@@ -35,24 +75,24 @@ var NavBarContent = React.createClass({
         ).start();
       }, 0);
     }
-  },
+  }
 
-  goBack: function() {
+  goBack() {
     if (!this.props.willDisappear) {
       this.props.goBack();
     }
-  },
+  }
 
-  goForward: function(route) {
+  goForward(route) {
     this.props.goForward(route);
-  },
+  }
 
-  customAction: function(opts) {
+  customAction(opts) {
     this.props.customAction(opts);
-  },
+  }
 
   render() {
-    var transitionStyle = {
+    let transitionStyle = {
         opacity: this.state.opacity,
       },
       leftCorner,
@@ -81,7 +121,7 @@ var NavBarContent = React.createClass({
     }
 
     leftCorner = (
-      <View style={[styles.corner, styles.alignLeft]}>
+      <View style={[this.styles.corner, this.styles.alignLeft]}>
         {leftCornerContent}
       </View>
     );
@@ -96,7 +136,7 @@ var NavBarContent = React.createClass({
     }
 
     rightCorner = (
-      <View style={[styles.corner, styles.alignRight]}>
+      <View style={[this.styles.corner, this.styles.alignRight]}>
         {rightCornerContent}
       </View>
     );
@@ -111,7 +151,7 @@ var NavBarContent = React.createClass({
       titleContent = <TitleComponent {...this.props.titleProps} />;
     } else {
       titleContent = (
-        <Text style={[styles.navbarText, this.props.titleStyle]} numberOfLines={1}>
+        <Text style={[this.styles.navbarText, this.props.titleStyle]} numberOfLines={1}>
           {this.props.route.name}
         </Text>
       );
@@ -132,55 +172,11 @@ var NavBarContent = React.createClass({
     color = this.props.borderColor ? this.props.borderColor : null;
 
     return (
-      <Animated.View style={[styles.navbar, transitionStyle, this.props.route.headerStyle,{borderBottomWidth: width, borderColor: color}, trans]}>
+      <Animated.View style={[this.styles.navbar, transitionStyle, this.props.route.headerStyle,{borderBottomWidth: width, borderColor: color}, trans]}>
         {leftCorner}
         {titleComponent}
         {rightCorner}
       </Animated.View>
     );
   }
-});
-
-
-var styles = StyleSheet.create({
-  navbar: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 64, // Default iOS navbar height
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingTop: 13
-  },
-  navbarText: {
-    color: 'white',
-    fontSize: 17,
-    margin: 10,
-    marginTop: 14,
-    fontWeight: '600',
-    textAlign: 'center',
-    alignItems: 'center',
-  },
-  corner: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-
-  alignLeft: {
-    alignItems: 'flex-start'
-  },
-  alignRight: {
-    alignItems: 'flex-end'
-  },
-  buttonTextLeft: {
-    marginLeft: 10,
-  },
-  buttonTextRight: {
-    marginRight: 10
-  }
-});
-
-
-module.exports = NavBarContent;
+};

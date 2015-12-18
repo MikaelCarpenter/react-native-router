@@ -1,6 +1,6 @@
 'use strict';
 
-var React = require('react-native');
+import React from 'react-native';
 
 var {
   AppRegistry,
@@ -11,16 +11,38 @@ var {
 } = React;
 
 
-var RightCorner = React.createClass({
+export default class RightCorner extends React.Component {
+  constructor(props) {
+    super(props);
+    this.styles = StyleSheet.create({
+      button: {
+        width: 100,
+        height: 50,
+        backgroundColor: 'orange'
+      }
+    });
+  }
+
   render() {
     return (
       <View style={styles.button} />
     )
   }
-});
+}
 
 
-var FindPeoplePage = React.createClass({
+export default class FindPeoplePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.styles = StyleSheet.create({
+      container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -28,21 +50,4 @@ var FindPeoplePage = React.createClass({
       </View>
     )
   }
-});
-
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    width: 100,
-    height: 50,
-    backgroundColor: 'orange'
-  }
-});
-
-
-module.exports = FindPeoplePage;
+}

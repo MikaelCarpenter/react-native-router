@@ -1,6 +1,6 @@
 'use strict';
 
-var React = require('react-native');
+import React from 'react-native';
 
 var {
   AppRegistry,
@@ -10,17 +10,18 @@ var {
   View,
 } = React;
 
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+export default class ThirdPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.styles = StyleSheet.create({
+      container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }
+    });
   }
-});
 
-
-var ThirdPage = React.createClass({
   render() {
     return (
       <View style={styles.container}>
@@ -28,7 +29,4 @@ var ThirdPage = React.createClass({
       </View>
     )
   }
-});
-
-
-module.exports = ThirdPage;
+}

@@ -1,6 +1,6 @@
 'use strict';
 
-var React = require('react-native');
+import React from 'react-native';
 
 var {
   StyleSheet,
@@ -9,22 +9,34 @@ var {
   TouchableHighlight,
 } = React;
 
+export default class NavButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.styles = StyleSheet.create({
+      navbarText: {
+        color: 'white',
+        fontSize: 16,
+        margin: 10,
+        fontWeight: '600',
+        textAlign: 'center',
+        alignItems: 'center',
+      }
+    });
+    this.onPress = this.onPress.bind(this);
+  }
 
-var NavButton = React.createClass({
-
-  onPress: function() {
+  onPress() {
     this.props.onPress();
-  },
+  }
 
   render() {
-    var backButton,
-      BackButton;
+    let backButton;
 
     if (this.props.backButtonComponent) {
-      BackButton = this.props.backButtonComponent;
+      const BackButton = this.props.backButtonComponent;
       backButton = <View><BackButton/></View>
     } else {
-      backButton = <Text style={styles.navbarText}>Back</Text>
+      backButton = <Text style={this.styles.navbarText}>Back</Text>
     }
 
     return (
@@ -33,19 +45,4 @@ var NavButton = React.createClass({
       </TouchableHighlight>
     );
   }
-});
-
-
-var styles = StyleSheet.create({
-  navbarText: {
-    color: 'white',
-    fontSize: 16,
-    margin: 10,
-    fontWeight: '600',
-    textAlign: 'center',
-    alignItems: 'center',
-  }
-});
-
-
-module.exports = NavButton;
+};

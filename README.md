@@ -17,34 +17,47 @@ Usage
 -----
 
 ```javascript
-var Router = require('gb-native-router');
+import Router from 'gb-native-router';
 ```
 
 The basics:
 ```javascript
 // The initial page
-var HelloPage = React.createClass({
-  render: function() {
+class HelloPage extends React.Component {
+  render() {
     return <Text>Hello world!</Text>;
   }
-});
-
-// Your route object should contain at least:
-// - The name of the route (which will become the navigation bar title)
-// - The component object for the page to render
-var firstRoute = {
-  name: 'Welcome!',
-  component: HelloPage
 };
 
 // The Router wrapper
-var MyApp = React.createClass({
+class MyApp extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.styles = StyleSheet.create({
+      header: {
+        backgroundColor: '#5cafec',
+      }
+    });
+
+    // Your route object should contain at least:
+    // - The name of the route (which will become the navigation bar title)
+    // - The component object for the page to render
+    this.firstRoute = {
+      name: 'Welcome!',
+      component: HelloPage,
+    };
+  }
+
   render() {
     return (
-      <Router firstRoute={firstRoute} />
+      <Router
+        firstRoute={this.firstRoute}
+        headerStyle={this.styles.header}
+      />
     )
   }
-});
+}
 
 AppRegistry.registerComponent('routerTest', () => MyApp);
 ```
@@ -54,25 +67,37 @@ Boom. That's it.
 From the "Hello world!"-page you can then navigate further to a new component by calling ```this.props.toRoute()```. Let's build upon the HelloPage component in our first example:
 
 ```javascript
-var HelloPage = React.createClass({
+class HelloPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.nextPage = this.nextPage.bind(this);
+  }
 
-  nextPage: function() {
+  nextPage() {
+    // Apply random background color to header of the next page
+    const styles = StyleSheet.create({
+      header: {
+        backgroundColor: Math.floor(Math.random()*16777215).toString(16),
+      }
+    });
+
     this.props.toRoute({
       name: "A new screen",
-      component: HelloPage
+      component: HelloPage,
+      headerStyle: styles.header,
     });
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <View>
         <TouchableHighlight onPress={this.nextPage} underlayColor="transparent">
           <Text>Next page please!</Text>
         </TouchableHighlight>
       </View>
-    );
+    )
   }
-});
+};
 ```
 
 Now, when you click on "Next page please!", it will go to the next page (which in this case is still HelloPage but with a new title). Keep in mind that ```this.props.toRoute()``` needs to be called from one of the top-level routes, therefore, if your link is deeply nested within multiple components, you need to make sure that the action "bubbles up" until it reaches the parent route, which in turn calls ```this.props.toRoute()```.
@@ -141,12 +166,12 @@ Events emitted by the router:
 A more advanced example: Twitter app
 ------------------------------------
 
-To see more of the router in action, you can check out the Twitter example app that comes with the package. Just make sure that you first drag all the images from ```node_modules/react-native-router/twitter-example/images``` to your project's Images.xcassets
+To see more of the router in action, you can check out the Twitter example app that comes with the package. Just make sure that you first drag all the images from ```node_modules/gb-native-router/twitter-example/images``` to your project's Images.xcassets
 
 After that, don't forget to rebuild the app in XCode before you launch the simulator. Then test the app by requiring the TwitterApp component:
 
 ```javascript
-var TwitterApp = require('./node_modules/react-native-router/twitter-example');
+import TwitterApp from 'gb-native-router/twitter-example';
 
 var {
   AppRegistry

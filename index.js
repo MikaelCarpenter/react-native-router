@@ -1,9 +1,9 @@
 'use strict';
 
-var React = require('react-native');
-var {EventEmitter} = require('fbemitter');
+import React from 'react-native';
+import {EventEmitter} from 'fbemitter';
 
-var NavBarContainer = require('./components/NavBarContainer');
+import NavBarContainer from './components/NavBarContainer';
 
 var {
   StyleSheet,
@@ -13,7 +13,7 @@ var {
   Platform
 } = React;
 
-class Router extends React.Component{
+export default class Router extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +22,12 @@ class Router extends React.Component{
         index: null
       }
     };
+    this.styles = StyleSheet.create({
+      container: {
+        flex: 1,
+        backgroundColor: '#FFFFFF'
+      },
+    });
     this.emitter = new EventEmitter();
   }
 
@@ -54,67 +60,66 @@ class Router extends React.Component{
   }
 
   setTitleProps(props) {
-    this.setState({ titleProps: props });   
+    this.setState({ titleProps: props });
   }
 
   customAction(opts) {
     this.props.customAction(opts);
   }
 
-  configureScene(route) {   
-    return route.sceneConfig || Navigator.SceneConfigs.FloatFromRight;    
+  configureScene(route) {
+    return route.sceneConfig || Navigator.SceneConfigs.FloatFromRight;
   }
 
   renderScene(route, navigator) {
-
-    var goForward = function(route) {
+    const goForward = (route) => {
       route.index = this.state.route.index + 1 || 1;
       navigator.push(route);
-    }.bind(this);
+    };
 
-    var replaceRoute = function(route) {
+    const replaceRoute = (route) => {
       route.index = this.state.route.index || 0;
       navigator.replace(route);
-    }.bind(this);
+    };
 
-    var resetToRoute = function(route) {
+    const resetToRoute = (route) => {
       route.index = 0;
       navigator.resetTo(route);
-    }.bind(this);
+    };
 
-    var goBackwards = function() {
+    const goBackwards = () => {
       this.onBack(navigator);
-    }.bind(this);
+    };
 
-    var goToFirstRoute = function() {
+    const goToFirstRoute = () => {
       navigator.popToTop();
     };
 
-    var setRightProps = function(props) {
+    const setRightProps = (props) => {
       this.setState({ rightProps: props });
-    }.bind(this);
+    };
 
-    var setLeftProps = function(props) {
+    const setLeftProps = (props) => {
       this.setState({ leftProps: props });
-    }.bind(this);
+    };
 
-    var setTitleProps = function(props) {    
-      this.setState({ titleProps: props });   
-    }.bind(this); 
+    const setTitleProps = (props) => {
+      this.setState({ titleProps: props });
+    };
 
-    var customAction = function(opts) {
+    const customAction = (opts) => {
       this.customAction(opts);
-    }.bind(this);
+    };
 
-    var Content = route.component;
+    const Content = route.component;
 
     // Remove the margin of the navigation bar if not using navigation bar
-    var extraStyling = {};
+    let extraStyling = {};
     if (this.props.hideNavigationBar) {
       extraStyling.marginTop = 0;
     }
 
-    var margin;
+    let margin;
     if(route.trans) {
       margin = 0;
     } else if (this.props.hideNavigationBar || route.hideNavigationBar) {
@@ -125,7 +130,7 @@ class Router extends React.Component{
 
     return (
       <View
-        style={[styles.container, this.props.bgStyle, extraStyling, {marginTop: margin}]}>
+        style={[this.styles.container, this.props.bgStyle, extraStyling, {marginTop: margin}]}>
         <Content
           name={route.name}
           index={route.index}
@@ -148,7 +153,7 @@ class Router extends React.Component{
   }
 
   render() {
-    var navigationBar;
+    let navigationBar;
     // Status bar color
     if (Platform.OS === 'ios') {
       if (this.props.statusBarColor === 'black') {
@@ -193,12 +198,3 @@ class Router extends React.Component{
     );
   }
 }
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF'
-  },
-});
-
-module.exports = Router;

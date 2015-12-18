@@ -1,20 +1,25 @@
 'use strict';
 
-var React = require('react-native');
+import React from 'react-native';
 
-var Tweet = require('../components/Tweet');
-var TweetPage = require('../components/TweetBig');
+import Tweet from '../components/Tweet';
+import TweetPage from '../components/TweetBig';
 
 var {
   StyleSheet,
   ScrollView
 } = React;
 
-
-var HomePage = React.createClass({
-
-  getInitialState: function() {
-    return {
+export default class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.styles = StyleSheet.create({
+      container: {
+        flex: 1,
+        backgroundColor: '#f5f8fa'
+      }
+    });
+    this.state = {
       tweets: [
         {
           text: "The React Native Router is awesome!",
@@ -33,16 +38,17 @@ var HomePage = React.createClass({
           }
         }
       ]
-    }
-  },
+    };
+    this.goToTweet = this.goToTweet.bind(this);
+  }
 
-  goToTweet: function(tweetData) {
+  goToTweet(tweetData) {
     this.props.toRoute({
       name: "Tweet",
       component: TweetPage,
       data: tweetData
     });
-  },
+  }
 
   render() {
     var Tweets = this.state.tweets.map((tweetData) => {
@@ -50,20 +56,9 @@ var HomePage = React.createClass({
     });
 
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={this.styles.container}>
         {Tweets}
       </ScrollView>
     )
   }
-});
-
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f8fa'
-  }
-});
-
-
-module.exports = HomePage;
+}
