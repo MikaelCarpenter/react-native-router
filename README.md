@@ -77,6 +77,8 @@ var HelloPage = React.createClass({
 
 Now, when you click on "Next page please!", it will go to the next page (which in this case is still HelloPage but with a new title). Keep in mind that ```this.props.toRoute()``` needs to be called from one of the top-level routes, therefore, if your link is deeply nested within multiple components, you need to make sure that the action "bubbles up" until it reaches the parent route, which in turn calls ```this.props.toRoute()```.
 
+呼叫 ```this.props.toBack()```，能夠回到上一頁。
+
 Configurations
 --------------
 
@@ -90,6 +92,9 @@ The **`<Router \>`** object used to initialize the navigation can take the follo
 - `rightCorner`: If you have the same occuring action buttons on the right side of your navigation bar (like the Twitter "Compose"-button), you can specify a component for that view.
 - `customAction`: A special callback prop for your action buttons (this can be handy for triggering a side menu for example). The action gets triggered from your custom `leftCorner` or `rightCorner` components by calling `this.props.customAction("someActionName")` from them. It is then picked up like this: `<Router customAction={this.doSomething} />`.
 - `hideNavigationBar`: Hide the navigation bar, always
+- `noStatusBar`: Hide status bar, always, iOS only
+- `expensive`: If all scenes is expensive, render placeholder to avoid stutter
+- `renderPlaceholderView`: Override default placeholder for loading expensive scene
 
 The **`this.props.toRoute()`** callback prop takes one parameter (a JavaScript object) which can have the following keys:
 - `name`: The name of your route, which will be shown as the title of the navigation bar unless it is changed.
@@ -101,6 +106,7 @@ The **`this.props.toRoute()`** callback prop takes one parameter (a JavaScript o
 - `passProps`: Takes in an object. Passes each `key: value` pair to your component as a prop. i.e. <Component key={value} />
 - `trans`: If set to a truthy value it will make the navbar transparent and move your component content so that it sits behind the nav.
 - `hideNavigationBar`: If set to a truthy value will hide the navigationbar out of view, and move the component so that it is at the top of the screen.
+- `noStatusBar`: Hide status bar, iOS only
 - `leftCornerProps`: If you set a `leftCorner` component you can use this property to pass props to that component.
 - `rightCornerProps`: If you set a `rightCorner` component you can use this property to pass props to that component.
 - `sceneConfig`: Control the animation of the route being switched. Possible values are:
@@ -113,6 +119,8 @@ The **`this.props.toRoute()`** callback prop takes one parameter (a JavaScript o
   - Navigator.SceneConfigs.PushFromRight
   - Navigator.SceneConfigs.VerticalDownSwipeJump
   - Navigator.SceneConfigs.VerticalUpSwipeJump
+- `expensive`: If the scene is expensive, render placeholder to avoid stutter
+- `renderPlaceholderView`: Override default placeholder for loading expensive scene
 
 The **`this.props.replaceRoute`**  takes in an object that can contain the same keys as `toRoute()`. The difference is that instead of adding a route to your stack, it replaces the route
 that you're on with the new route that you pass it.
